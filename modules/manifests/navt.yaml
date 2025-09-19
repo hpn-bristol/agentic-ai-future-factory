@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: navt
+  namespace: agentic-ai
+  labels:
+    app: navt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: navt
+  template:
+    metadata:
+      labels:
+        app: navt
+    spec:
+      nodeSelector:
+          kubernetes.io/arch: amd64
+      imagePullSecrets:
+        - name: ghcr-creds
+      containers:
+        - name: navt
+          image: ghcr.io/hpn-bristol/navt:0.0.1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ROS_DOMAIN_ID
+              value: "0"
+            - name: RMW_IMPLEMENTATION
+              value: "rmw_fastrtps_cpp"
+            - name: ROS_DISCOVERY_SERVER
+              value: "10.43.34.30:11811"

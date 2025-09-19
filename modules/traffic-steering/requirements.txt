@@ -1,0 +1,6 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.3.0+cpu
+
+joblib==1.5.2
+empy==3.3.4
+scikit-learn==1.7.1

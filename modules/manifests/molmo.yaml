@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: molmo
+  namespace: agentic-ai
+  labels:
+    app: molmo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: molmo
+  template:
+    metadata:
+      labels:
+        app: molmo
+    spec:
+      dnsPolicy: Default
+      imagePullSecrets:
+        - name: ghcr-creds
+      nodeSelector:
+        nvidia.com/gpu.present: "true"
+        kubernetes.io/hostname: worker5
+      containers:
+        - name: molmo
+          image: ghcr.io/hpn-bristol/molmo:1.0.4
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8989
+          resources:
+            requests:
+              nvidia.com/gpu: 1
+            limits:
+              nvidia.com/gpu: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: molmo
+  namespace: agentic-ai
+  labels:
+    app: molmo
+spec:
+  selector:
+    app: molmo
+  ports:
+    - name: http
+      port: 8989
+      targetPort: 8989
+  type: ClusterIP

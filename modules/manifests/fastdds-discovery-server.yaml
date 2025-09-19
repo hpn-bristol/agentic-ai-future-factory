@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastdds-discovery-server
+  labels:
+    app: fastdds-discovery-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastdds-discovery-server
+  template:
+    metadata:
+      labels:
+        app: fastdds-discovery-server
+    spec:
+      imagePullSecrets:
+        - name: ghcr-creds
+      containers:
+        - name: fastdds
+          image: ghcr.io/hpn-bristol/fastdds-discovery-server:1.0.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: SERVER_ID
+              value: "0"
+            - name: DISCOVERY_PORT
+              value: "11811"
+            - name: DISCOVERY_ADDR
+              value: "0.0.0.0"
+          ports:
+            - name: discovery-udp
+              containerPort: 11811
+              protocol: UDP
+            - name: discovery-tcp
+              containerPort: 42100
+              protocol: TCP
+          readinessProbe:
+            exec:
+              command: ["/bin/sh", "-c", "pgrep -f 'fastdds|discovery-server' >/dev/null"]
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command: ["/bin/sh", "-c", "pgrep -f 'fastdds|discovery-server' >/dev/null"]
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastdds-discovery-server
+  labels:
+    app: fastdds-discovery-server
+spec:
+  type: ClusterIP
+  selector:
+    app: fastdds-discovery-server
+  ports:
+    - name: discovery-udp
+      port: 11811
+      targetPort: 11811
+      protocol: UDP
+    - name: discovery-tcp
+      port: 42100
+      targetPort: 42100
+      protocol: TCP

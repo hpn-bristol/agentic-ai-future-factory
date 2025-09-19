@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ros-sc-server
+  namespace: agentic-ai
+  labels:
+    app: ros-sc
+    component: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros-sc
+      component: server
+  template:
+    metadata:
+      labels:
+        app: ros-sc
+        component: server
+    spec:
+      imagePullSecrets:
+        - name: ghcr-creds
+      dnsPolicy: Default
+      containers:
+        - name: server
+          image: ghcr.io/hpn-bristol/ros-sc-server:1.0.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MEC_PORT
+              value: "12350"
+          ports:
+            - containerPort: 12350
+              name: mec
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ros-sc-client
+  namespace: agentic-ai
+  labels:
+    app: ros-sc
+    component: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros-sc
+      component: client
+  template:
+    metadata:
+      labels:
+        app: ros-sc
+        component: client
+    spec:
+      nodeSelector:
+          kubernetes.io/arch: arm64
+      imagePullSecrets:
+        - name: ghcr-creds
+      dnsPolicy: Default
+      containers:
+        - name: client
+          image: ghcr.io/hpn-bristol/ros-sc-client:arm64
+          imagePullPolicy: Always
+          env:
+            - name: ROS_DOMAIN_ID
+              value: "0"
+            - name: RMW_IMPLEMENTATION
+              value: "rmw_fastrtps_cpp"
+            - name: ROS_DISCOVERY_SERVER
+              value: "10.43.34.30:11811"
+            - name: ROS2_TOPIC
+              value: "/quadrotor1/Camera_rgb"
+            - name: SPLIT_LAYER
+              value: "3"
+            - name: MEC_IP
+              value: "10.43.67.2" 
+            - name: MEC_PORT
+              value: "12350"
+            - name: CSV_FILE
+              value: monitor.csv
+            - name: NET_INTERFACE
+              value: eth0
+          volumeMounts:
+            - name: tegra-bin
+              mountPath: /usr/bin/tegrastats
+              subPath: tegrastats
+      volumes:
+            - name: tegra-bin
+              hostPath:
+                path: /usr/bin/

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traffic-steering
+  namespace: agentic-ai
+  labels:
+    app: traffic-steering
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traffic-steering
+  template:
+    metadata:
+      labels:
+        app: traffic-steering
+    spec:
+      nodeSelector:
+          kubernetes.io/arch: amd64
+      imagePullSecrets:
+        - name: ghcr-creds
+      dnsPolicy: Default
+      containers:
+        - name: traffic-steering
+          image: ghcr.io/hpn-bristol/traffic-steering:1.0.1-cpu
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ROS_DOMAIN_ID
+              value: "0"
+            - name: RMW_IMPLEMENTATION
+              value: "rmw_fastrtps_cpp"
+            - name: ROS_DISCOVERY_SERVER
+              value: "10.43.34.30:11811"

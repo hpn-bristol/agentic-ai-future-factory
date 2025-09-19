@@ -1,0 +1,14 @@
+transformers
+Pillow
+fastapi
+uvicorn
+torch
+python-multipart
+requests
+SpeechRecognition
+pyttsx3
+gunicorn
+torchvision
+einops
+accelerate
+tensorflow

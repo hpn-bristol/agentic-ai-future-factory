@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omniverse
+  namespace: agentic-ai
+  labels:
+    app: omniverse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: omniverse
+  template:
+    metadata:
+      labels:
+        app: omniverse
+    spec:
+      imagePullSecrets:
+        - name: ghcr-creds
+      dnsPolicy: Default
+      nodeSelector:
+        kubernetes.io/hostname: worker4
+        nvidia.com/gpu.present: "true"  
+      containers:
+        - name: omniverse
+          image: ghcr.io/hpn-bristol/omniverse-uc5-demo:headless_1.1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: RMW_IMPLEMENTATION
+              value: "rmw_fastrtps_cpp"
+            - name: ROS_DOMAIN_ID
+              value: "0"
+            - name: ROS_DISCOVERY_SERVER
+              value: "10.43.34.30:11811"
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: "all"
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: "compute,utility,graphics"
+          resources:
+            requests:
+              nvidia.com/gpu: 1
+            limits:
+              nvidia.com/gpu: 1
