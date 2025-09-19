@@ -2,8 +2,6 @@
 
 A Python project for agentic AI-driven xApp orchestration.
 
-Further [documentation](docs/index.md).
-
 
 ## Project Structure
 
@@ -12,7 +10,7 @@ agentic-ai-dt/
 ├── main.py                # Entry point for running the pipeline
 ├── config.py              # Configuration settings
 ├── requirements.txt       # Python dependencies
-├── modules/               # Core modules (bandit, rag_chain, evaluation, etc.)
+├── helpers/               # Core modules (bandit, rag_chain, evaluation, etc.)
 ├── db/                    # Database files (ChromaDB, etc.)
 ├── materials/             # Source documents and deliverables
 ├── pipeline_blacklist.json# Blacklist for pipeline filtering
