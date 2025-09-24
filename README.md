@@ -32,7 +32,7 @@ agentic-ai-dt/
 ├── run_metrics.jsonl       # Metrics output
 ├── README.md               # Project documentation
 └── docs/
-    └── architecture.png    # System diagram (add your image)
+    └── architecture.png    # System diagram
 ```
 
 ## Quick Start
