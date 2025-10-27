@@ -5,7 +5,7 @@
 [![Argo Workflows](https://img.shields.io/badge/Argo%20Workflows-3.x-ef7b4d)](https://argoproj.github.io/argo-workflows/)
 [![Helm](https://img.shields.io/badge/Helm-3.x-0f1689)](https://helm.sh/)
 [![Docker](https://img.shields.io/badge/Docker-24%2B-2496ed)](https://www.docker.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
 Agentic AI DT is a Python platform for agentic AI–driven xApp orchestration. It combines bandit-based decisioning with RAG pipelines and evaluation loops to deploy and manage workflows on Kubernetes (via Argo Workflows), enabling reproducible, data‑driven orchestration for digital twins and network functions.
 
@@ -145,4 +145,4 @@ pytest -q
 Contributions are welcome. Please open an issue to discuss changes before submitting a PR. Ensure code is formatted and tests pass.
 
 ## License
-MIT © Contributors
+This project is licensed under the GNU General Public License v3.0 or later. See the `LICENSE` file for details.

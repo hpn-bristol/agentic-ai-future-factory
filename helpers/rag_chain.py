@@ -1,3 +1,8 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (c) 2025 hpn-bristol
+# This file is part of the 'agentic-ai-future-factory' project and is
+# licensed under the GNU General Public License v3.0 or later. See LICENSE.
+
 import os
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_chroma import Chroma

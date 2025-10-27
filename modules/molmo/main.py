@@ -1,3 +1,8 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (c) 2025 hpn-bristol
+# This file is part of the 'agentic-ai-future-factory' project and is
+# licensed under the GNU General Public License v3.0 or later. See LICENSE.
+
 from transformers import AutoModelForCausalLM, AutoProcessor, GenerationConfig
 from PIL import Image
 import torch
@@ -80,7 +85,7 @@ def generate_batch(image_base64_list, text_list):
                         dtype=torch.bfloat16 if use_cuda else torch.float32):
         output = model.generate_from_batch(
             inputs,
-            GenerationConfig(max_new_tokens=2000, stop_strings="<|endoftext|>"),
+            GenerationConfig(max_new_tokens=2000, stop_strings=""),
             tokenizer=processor.tokenizer
         )
     
@@ -119,7 +124,7 @@ def generate(image_base64, text, new_model_name=None):
                         dtype=torch.bfloat16 if use_cuda else torch.float32):
         output = model.generate_from_batch(
             inputs,
-            GenerationConfig(max_new_tokens=2000, stop_strings="<|endoftext|>"),
+            GenerationConfig(max_new_tokens=2000, stop_strings=""),
             tokenizer=processor.tokenizer
         )
     
